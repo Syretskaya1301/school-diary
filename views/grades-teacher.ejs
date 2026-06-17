@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('partials/theme-head') %>
+  <title>Журнал оценок</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="main">
+    <h1 class="page-title">Журнал оценок</h1>
+    <p class="page-subtitle">Выставление и просмотр оценок</p>
+
+    <div class="card form-card">
+      <h2>Выставить оценку</h2>
+      <form method="post" action="/grades">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ученик</label>
+            <select name="student" required>
+              <% students.forEach(function(s) { %>
+              <option value="<%= s.name %>"><%= s.name %> (<%= s.class %>)</option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Предмет</label>
+            <select name="subject" required>
+              <% subjects.forEach(function(s) { %>
+              <option value="<%= s %>"><%= s %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Оценка</label>
+            <select name="grade" required>
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Тип</label>
+            <select name="type">
+              <option>урок</option>
+              <option>контрольная</option>
+              <option>самостоятельная</option>
+              <option>диктант</option>
+              <option>изложение</option>
+              <option>устный ответ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Дата</label>
+            <input type="date" name="date" value="<%= new Date().toISOString().slice(0,10) %>">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Комментарий</label>
+          <input type="text" name="comment" placeholder="Необязательно">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:auto">Сохранить</button>
+      </form>
+    </div>
+
+    <form method="get" class="form-row" style="margin-bottom:1rem;max-width:400px">
+      <div class="form-group">
+        <label>Фильтр по ученику</label>
+        <select name="student" onchange="this.form.submit()">
+          <option value="">Все ученики</option>
+          <% students.forEach(function(s) { %>
+          <option value="<%= s.name %>" <%= filterStudent === s.name ? 'selected' : '' %>><%= s.name %></option>
+          <% }); %>
+        </select>
+      </div>
+    </form>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Ученик</th><th>Предмет</th><th>Оценка</th><th>Тип</th><th>Дата</th><th>Комментарий</th><th></th></tr>
+          </thead>
+          <tbody>
+            <% grades.forEach(function(g) { %>
+            <tr>
+              <td><%= g.student %></td>
+              <td><%= g.subject %></td>
+              <td><span class="grade-badge grade-<%= g.grade %>"><%= g.grade %></span></td>
+              <td><%= g.type %></td>
+              <td><%= g.date %></td>
+              <td><%= g.comment || '—' %></td>
+              <td>
+                <form method="post" action="/grades/delete" style="display:inline">
+                  <input type="hidden" name="id" value="<%= g.id %>">
+                  <button type="submit" class="btn btn-sm btn-danger-outline" onclick="return confirm('Удалить оценку?')">Удалить</button>
+                </form>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

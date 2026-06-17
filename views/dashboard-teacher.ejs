@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('partials/theme-head') %>
+  <title>Кабинет учителя</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="main">
+    <h1 class="page-title">Кабинет учителя</h1>
+    <p class="page-subtitle"><%= user.name %> · класс <%= school.class %> · <%= students.length %> учеников</p>
+    <p class="page-note">Начальная школа — один учитель ведёт все предметы класса</p>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h2>Управление</h2>
+        <p style="margin-bottom:0.75rem"><a href="/grades" class="btn btn-primary btn-sm">Журнал оценок</a></p>
+        <p><a href="/schedule" class="btn btn-primary btn-sm">Расписание класса</a></p>
+      </div>
+
+      <div class="card">
+        <h2>Класс <%= school.class %> — список учеников</h2>
+        <div class="student-list-scroll">
+          <ul class="student-list">
+            <% students.forEach(function(s, i) { %>
+            <li>
+              <span class="student-num"><%= i + 1 %></span>
+              <strong><%= s.name %></strong>
+              <a href="/grades?student=<%= encodeURIComponent(s.name) %>" class="btn btn-sm">Оценки</a>
+            </li>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="grid-column:1/-1">
+        <h2>Последние оценки</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Ученик</th><th>Предмет</th><th>Оценка</th><th>Тип</th><th>Дата</th></tr>
+            </thead>
+            <tbody>
+              <% recentGrades.forEach(function(g) { %>
+              <tr>
+                <td><%= g.student %></td>
+                <td><%= g.subject %></td>
+                <td><span class="grade-badge grade-<%= g.grade %>"><%= g.grade %></span></td>
+                <td><%= g.type %></td>
+                <td><%= g.date %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

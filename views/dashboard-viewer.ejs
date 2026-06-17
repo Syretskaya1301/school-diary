@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('partials/theme-head') %>
+  <title>Дневник</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="main">
+    <h1 class="page-title">Здравствуйте, <%= user.name %>!</h1>
+    <p class="page-subtitle"><%= viewerLabel %> · <%= todayName %></p>
+    <p class="readonly-banner">Режим просмотра — оценки и расписание только для чтения</p>
+
+    <% if (Object.keys(averages).length) { %>
+    <div class="grid grid-3" style="margin-bottom:1.5rem">
+      <% Object.keys(averages).forEach(function(subject) { %>
+      <div class="card stat-card">
+        <div class="number"><%= averages[subject] %></div>
+        <div class="label">Средний балл — <%= subject %></div>
+      </div>
+      <% }); %>
+    </div>
+    <% } %>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h2>Уроки сегодня</h2>
+        <% if (todayLessons.length) { %>
+          <% todayLessons.forEach(function(l) { %>
+          <div class="lesson-row">
+            <span class="lesson-time"><%= l.time %></span>
+            <span><strong><%= l.subject %></strong></span>
+            <span class="lesson-room">каб. <%= l.room %></span>
+            <span class="lesson-teacher"><%= l.teacher %></span>
+          </div>
+          <% }); %>
+        <% } else { %>
+        <p class="empty-state">Сегодня занятий нет</p>
+        <% } %>
+        <p style="margin-top:1rem"><a href="/schedule">Полное расписание →</a></p>
+      </div>
+
+      <div class="card">
+        <h2>Последние оценки</h2>
+        <% if (grades.length) { %>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Предмет</th><th>Оценка</th><th>Дата</th></tr></thead>
+            <tbody>
+              <% grades.slice(-6).reverse().forEach(function(g) { %>
+              <tr>
+                <td><%= g.subject %></td>
+                <td><span class="grade-badge grade-<%= g.grade %>"><%= g.grade %></span></td>
+                <td><%= g.date %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+        <% } else { %>
+        <p class="empty-state">Оценок пока нет</p>
+        <% } %>
+        <p style="margin-top:1rem"><a href="/grades">Все оценки →</a></p>
+      </div>
+    </div>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

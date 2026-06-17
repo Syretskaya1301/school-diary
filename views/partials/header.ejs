@@ -1,0 +1,20 @@
+<header class="app-header">
+  <div class="header-inner">
+    <a href="/" class="logo">📚 Начальная школа</a>
+    <nav class="nav">
+      <a href="/">Классы</a>
+      <% if (teacherClass) { %>
+      <a href="/class/<%= encodeURIComponent(teacherClass) %>">Мой класс</a>
+      <% } %>
+    </nav>
+    <div class="header-actions">
+      <%- include('./theme-toggle') %>
+      <% if (teacherClass) { %>
+      <form method="post" action="/teacher-logout" style="display:inline;margin:0;">
+        <button type="submit" class="theme-btn">Выйти</button>
+      </form>
+      <span class="user-badge">Учитель: <%= teacherClass %></span>
+      <% } %>
+    </div>
+  </div>
+</header>

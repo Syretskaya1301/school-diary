@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('partials/theme-head') %>
+  <title>Журнал оценок — <%= classInfo.name %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="main">
+    <h1 class="page-title">Журнал оценок класса <%= classInfo.name %></h1>
+    <p class="page-subtitle">Учитель: <strong><%= classInfo.teacher %></strong> · Кабинет: <strong><%= classInfo.room %></strong></p>
+
+    <% if (teacherMode) { %>
+    <div class="card form-card">
+      <h2>Выставить оценку</h2>
+      <form method="post" action="/class/<%= encodeURIComponent(classInfo.name) %>/grades">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ученик</label>
+            <select name="student" required>
+              <% students.forEach(function(s) { %>
+              <option value="<%= s.name %>"><%= s.name %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Предмет</label>
+            <select name="subject" required>
+              <% subjects.forEach(function(subject) { %>
+              <option value="<%= subject %>"><%= subject %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Оценка</label>
+            <select name="grade" required>
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Тип работы</label>
+            <select name="type">
+              <option>урок</option>
+              <option>контрольная</option>
+              <option>самостоятельная</option>
+              <option>диктант</option>
+              <option>изложение</option>
+              <option>устный ответ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Дата</label>
+            <input type="date" name="date" value="<%= new Date().toISOString().slice(0,10) %>">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Комментарий</label>
+          <input type="text" name="comment" placeholder="Необязательно">
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить оценку</button>
+      </form>
+    </div>
+    <% } else { %>
+    <div class="banner banner-muted">Оценки доступны только для просмотра. Учитель может войти, чтобы редактировать.</div>
+    <% } %>
+
+    <div class="card">
+      <h2>Статистика по предметам</h2>
+      <% if (Object.keys(summary).length) { %>
+      <div class="grid grid-2" style="gap:0.75rem;">
+        <% Object.keys(summary).forEach(function(subject) { %>
+        <div class="stat-card">
+          <div class="number"><%= summary[subject] %></div>
+          <div class="label"><%= subject %></div>
+        </div>
+        <% }); %>
+      </div>
+      <% } else { %>
+      <p class="empty-state">Оценок пока нет.</p>
+      <% } %>
+    </div>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Ученик</th><th>Предмет</th><th>Оценка</th><th>Тип</th><th>Дата</th><th>Комментарий</th><th></th></tr>
+          </thead>
+          <tbody>
+            <% grades.forEach(function(g) { %>
+            <tr>
+              <td><%= g.student %></td>
+              <td><%= g.subject %></td>
+              <td><span class="grade-badge grade-<%= g.grade %>"><%= g.grade %></span></td>
+              <td><%= g.type %></td>
+              <td><%= g.date %></td>
+              <td><%= g.comment || '—' %></td>
+              <td>
+                <% if (teacherMode) { %>
+                <form method="post" action="/class/<%= encodeURIComponent(classInfo.name) %>/grades/delete" style="display:inline">
+                  <input type="hidden" name="id" value="<%= g.id %>">
+                  <button type="submit" class="btn btn-sm btn-danger-outline" onclick="return confirm('Удалить оценку?')">Удалить</button>
+                </form>
+                <% } %>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

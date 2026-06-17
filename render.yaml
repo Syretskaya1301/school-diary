@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: school-diary
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js

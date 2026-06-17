@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>О системе</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="main">
+    <h1 class="page-title">О системе</h1>
+    <p class="page-subtitle">Электронный дневник для школы</p>
+
+    <div class="card" style="margin-bottom:1.25rem">
+      <h2>Назначение</h2>
+      <p>Веб-приложение предназначено для автоматизации учёта успеваемости, расписания и домашних заданий в общеобразовательной школе. Система заменяет бумажный дневник и обеспечивает доступ учеников, учителей и администрации к актуальной информации.</p>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h2>Функции для ученика</h2>
+        <ul style="margin-left:1.25rem">
+          <li>Просмотр оценок и среднего балла по предметам</li>
+          <li>Расписание уроков на неделю</li>
+          <li>Домашние задания с датами сдачи</li>
+          <li>Журнал пропусков</li>
+          <li>Объявления школы</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Функции для учителя</h2>
+        <ul style="margin-left:1.25rem">
+          <li>Выставление оценок с типом работы</li>
+          <li>Публикация домашних заданий для класса</li>
+          <li>Просмотр списка учеников и журнала</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Технологии</h2>
+        <ul style="margin-left:1.25rem">
+          <li><strong>Node.js</strong> — серверная платформа</li>
+          <li><strong>Express</strong> — веб-фреймворк</li>
+          <li><strong>EJS</strong> — шаблоны страниц</li>
+          <li><strong>JSON-файл</strong> — хранение данных (демо-режим)</li>
+          <li><strong>CSS3</strong> — адаптивный интерфейс</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Тема диплома</h2>
+        <p><em>«Разработка электронного дневника для школы»</em></p>
+        <p style="margin-top:0.75rem;color:var(--muted);font-size:0.9rem">
+          В перспективе систему можно расширить: подключение PostgreSQL, мобильное приложение, интеграция с «Госуслуги.Образование», уведомления родителям по SMS/e-mail.
+        </p>
+      </div>
+    </div>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

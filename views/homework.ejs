@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Домашние задания</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="main">
+    <h1 class="page-title">Домашние задания</h1>
+    <p class="page-subtitle">Класс <%= className %></p>
+
+    <% if (user.role === 'teacher' || user.role === 'admin') { %>
+    <div class="card form-card">
+      <h2>Задать домашнее задание</h2>
+      <form method="post" action="/homework">
+        <input type="hidden" name="class" value="<%= className %>">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Предмет</label>
+            <select name="subject" required>
+              <% subjects.forEach(function(s) { %>
+              <option value="<%= s %>"><%= s %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Сдать до</label>
+            <input type="date" name="dueDate" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Задание</label>
+          <textarea name="text" required placeholder="Текст задания..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:auto">Опубликовать</button>
+      </form>
+    </div>
+
+    <% if (user.role !== 'student') { %>
+    <form method="get" class="form-row" style="margin-bottom:1rem;max-width:300px">
+      <div class="form-group">
+        <label>Класс</label>
+        <select name="class" onchange="this.form.submit()">
+          <% classes.forEach(function(c) { %>
+          <option value="<%= c %>" <%= c === className ? 'selected' : '' %>><%= c %></option>
+          <% }); %>
+        </select>
+      </div>
+    </form>
+    <% } %>
+    <% } %>
+
+    <div class="card">
+      <% if (items.length) { %>
+        <% items.forEach(function(h) { %>
+        <div class="hw-item">
+          <div class="hw-subject"><%= h.subject %></div>
+          <p><%= h.text %></p>
+          <div class="hw-due">Сдать до: <%= h.dueDate %> · <%= h.author %></div>
+        </div>
+        <% }); %>
+      <% } else { %>
+      <p class="empty-state">Заданий нет</p>
+      <% } %>
+    </div>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

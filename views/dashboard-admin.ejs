@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панель администратора</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="main">
+    <h1 class="page-title">Панель администратора</h1>
+    <p class="page-subtitle">Управление электронным дневником школы</p>
+
+    <div class="grid grid-3" style="margin-bottom:1.5rem">
+      <div class="card stat-card">
+        <div class="number"><%= stats.students %></div>
+        <div class="label">Учеников</div>
+      </div>
+      <div class="card stat-card">
+        <div class="number"><%= stats.teachers %></div>
+        <div class="label">Учителей</div>
+      </div>
+      <div class="card stat-card">
+        <div class="number"><%= stats.grades %></div>
+        <div class="label">Записей об оценках</div>
+      </div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h2>Разделы системы</h2>
+        <p><a href="/schedule">Расписание классов</a></p>
+        <p><a href="/grades">Журнал оценок</a></p>
+        <p><a href="/homework">Домашние задания</a></p>
+        <p><a href="/attendance">Учёт пропусков</a></p>
+      </div>
+      <div class="card">
+        <h2>Объявления</h2>
+        <% announcements.forEach(function(a) { %>
+        <div class="announcement">
+          <h4><%= a.title %></h4>
+          <p><%= a.text %></p>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

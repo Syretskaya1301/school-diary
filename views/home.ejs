@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include('partials/theme-head') %>
+  <title>Начальная школа — дневники классов</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <main class="main">
+    <section class="hero">
+      <h1>Электронный дневник начальной школы</h1>
+      <p>Выберите класс, чтобы открыть расписание, журнал оценок и список учеников. Зайдите сразу на сайт без роли ученика или родителя.</p>
+    </section>
+
+    <section class="classes-section">
+      <h2>Классы начальной школы</h2>
+      <div class="grid grid-4 classes-grid">
+        <% classes.forEach(function(cls) { %>
+        <article class="card class-card">
+          <div class="card-head">
+            <span class="class-name">Класс <%= cls.name %></span>
+            <% if (teacherClass === cls.name) { %>
+            <span class="badge badge-primary">Вход для учителя</span>
+            <% } %>
+          </div>
+          <p>Учитель: <strong><%= cls.teacher %></strong></p>
+          <p>Кабинет: <strong><%= cls.room %></strong></p>
+          <p>Учеников: <strong><%= cls.students.length %></strong></p>
+          <a href="/class/<%= encodeURIComponent(cls.name) %>" class="btn btn-primary">Открыть дневник</a>
+        </article>
+        <% }); %>
+      </div>
+    </section>
+
+    <section class="teacher-section">
+      <div class="card">
+        <h2>Учительский доступ</h2>
+        <p>Учитель может редактировать расписание и ставить оценки прямо в выбранном классе.</p>
+        <form method="post" action="/teacher-login" class="form-row">
+          <div class="form-group">
+            <label>Класс</label>
+            <select name="className" required>
+              <% classes.forEach(function(cls) { %>
+              <option value="<%= cls.name %>"><%= cls.name %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Пароль учителя</label>
+            <input type="password" name="password" placeholder="Введите пароль" required>
+          </div>
+          <div class="form-group" style="align-self:end;">
+            <button type="submit" class="btn btn-primary">Войти как учитель</button>
+          </div>
+        </form>
+        <% if (loginError) { %>
+        <div class="alert-error"><%= loginError %></div>
+        <% } %>
+        <p class="hint-muted">После загрузки сайта на сервер вы можете создавать QR-код на адрес <strong>http://ваш-сайт/</strong> или напрямую на класс <strong>http://ваш-сайт/class/3А</strong>.</p>
+      </div>
+    </section>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>
