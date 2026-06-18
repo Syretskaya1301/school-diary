@@ -713,3 +713,22 @@ tr:hover td { background: var(--row-hover); }
     grid-template-columns: 1fr !important;
   }
 }
+.hint-muted {
+    display: none !important;
+}
+/* Скрыть всё, что содержит QR-текст */
+.hint-muted,
+p.hint-muted,
+.hint-muted strong {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+}
+.teacher-section {
+    display: none !important;
+}
