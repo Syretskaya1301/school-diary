@@ -729,6 +729,6 @@ p.hint-muted,
     font-size: 0 !important;
     line-height: 0 !important;
 }
-.teacher-section {
+.hint-muted {
     display: none !important;
 }
